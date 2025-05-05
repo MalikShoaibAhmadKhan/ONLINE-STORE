@@ -1,0 +1,14 @@
+{
+  "name": "online-store-frontend",
+  "version": "1.0.0",
+  "description": "Frontend for Online Store Application",
+  "main": "index.js",
+  "scripts": {
+    "start": "serve -s dist",
+    "build": "mkdir -p dist && cp -r src/* dist/",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "serve": "^14.2.1"
+  }
+} 

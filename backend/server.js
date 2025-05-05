@@ -4,20 +4,35 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const { Pool } = require('pg');
+require('dotenv').config();
 
 // Create Express app
 const app = express();
+const port = process.env.BACKEND_PORT || 3000;
 
-// Enable CORS with specific origin for development
-app.use(cors({
-  origin: '*', // In production, you would specify your frontend domain
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-}));
-
-// Define middleware
+// Middleware
+app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+
+// Database connection
+const pool = new Pool({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  port: process.env.DB_PORT || 5432
+});
+
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.status(200).send('healthy');
+});
+
+// Basic test endpoint
+app.get('/', (req, res) => {
+  res.json({ message: 'Welcome to Online Store API' });
+});
 
 // Log all requests
 app.use((req, res, next) => {
@@ -124,8 +139,8 @@ app.get('/api/categories', (req, res) => {
 
 // Error handling middleware
 app.use((err, req, res, next) => {
-  console.error('Server error:', err);
-  res.status(500).json({ message: 'Internal server error' });
+  console.error(err.stack);
+  res.status(500).json({ error: 'Something went wrong!' });
 });
 
 // Handle 404 routes
@@ -134,9 +149,8 @@ app.use((req, res) => {
 });
 
 // Start the server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+app.listen(port, '0.0.0.0', () => {
+  console.log(`Server is running on port ${port}`);
 });
 
 // Mock products data (in a real app, this would come from a database)
