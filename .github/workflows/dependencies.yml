@@ -1,0 +1,51 @@
+name: Update Dependencies
+
+on:
+  schedule:
+    - cron: '0 0 * * 0'  # Run weekly on Sunday at midnight
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  update-deps:
+    name: Update Dependencies
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20'
+        cache: 'npm'
+
+    - name: Update Backend Dependencies
+      working-directory: ./backend
+      run: |
+        npm outdated
+        npm update
+        npm audit fix
+
+    - name: Update Frontend Dependencies
+      working-directory: ./frontend
+      run: |
+        npm outdated
+        npm update
+        npm audit fix
+
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v5
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        commit-message: 'chore(deps): update dependencies'
+        title: 'chore(deps): update dependencies'
+        body: |
+          This PR updates project dependencies to their latest compatible versions.
+          
+          - Backend and frontend npm packages updated
+          - Security vulnerabilities fixed where possible
+          
+          Please review the changes and test thoroughly before merging.
+        branch: deps/update-packages
+        base: main
+        labels: dependencies 

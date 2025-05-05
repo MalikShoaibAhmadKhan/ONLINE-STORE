@@ -104,6 +104,77 @@ graph TD
    - Backup management
    - Data integrity
 
+## 🔄 CI/CD Pipeline
+
+Our project uses GitHub Actions for continuous integration and deployment, ensuring code quality and automated deployments.
+
+### Workflows
+
+1. **Main Pipeline (`ci.yml`)**
+   - Triggered on push to main and pull requests
+   - Stages:
+     - Test: Runs unit and integration tests
+     - Security: Performs security scans
+     - Build: Creates and pushes Docker images
+     - Deploy: Deploys to production server
+
+2. **PR Checks (`pr-check.yml`)**
+   - Triggered on pull request events
+   - Checks:
+     - Code linting
+     - Type checking
+     - E2E tests with Cypress
+     - Database integration tests
+
+3. **Dependency Updates (`dependencies.yml`)**
+   - Runs weekly (Sunday at midnight)
+   - Automatically updates dependencies
+   - Creates PR with dependency updates
+   - Includes security audit
+
+### Required Secrets
+
+The following secrets need to be set in your GitHub repository:
+
+```bash
+# Docker Hub
+DOCKERHUB_USERNAME=your_username
+DOCKERHUB_TOKEN=your_token
+
+# Deployment
+DEPLOY_HOST=your_server_ip
+DEPLOY_USER=your_server_user
+SSH_PRIVATE_KEY=your_ssh_key
+
+# Security
+SNYK_TOKEN=your_snyk_token
+```
+
+### Deployment Process
+
+1. **Build Stage**
+   - Multi-stage Docker builds
+   - Layer caching for faster builds
+   - Security scanning of images
+
+2. **Testing**
+   - Unit tests
+   - Integration tests
+   - E2E tests
+   - Security scans
+
+3. **Deployment**
+   - Automated deployment to production
+   - Zero-downtime updates
+   - Automatic rollback on failure
+
+### Monitoring
+
+- GitHub Actions dashboard
+- Deployment status checks
+- Security scan reports
+- Dependency update notifications
+
 ## 📁 Directory Structure
 
 ```
