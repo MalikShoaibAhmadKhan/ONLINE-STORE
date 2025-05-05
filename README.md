@@ -1,39 +1,157 @@
-# Online Store Application
+# 🛍️ Online Store - Modern E-commerce Platform
 
-A modern, containerized e-commerce application built with Node.js, Express, PostgreSQL, and a static frontend served by NGINX.
+<div align="center">
+
+![GitHub](https://img.shields.io/github/license/MalikShoaibAhmadKhan/ONLINE-STORE)
+![Docker](https://img.shields.io/badge/Docker-Ready-blue)
+![Node](https://img.shields.io/badge/Node.js-v20-green)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-v13-blue)
+![NGINX](https://img.shields.io/badge/NGINX-Stable-green)
+
+</div>
+
+<p align="center">
+  <img src="https://via.placeholder.com/800x400?text=Online+Store+Architecture" alt="Online Store Architecture">
+</p>
+
+A modern, containerized e-commerce application built with a microservices architecture. This project showcases best practices in containerization, security, and scalability while providing a robust foundation for e-commerce operations.
+
+## 📑 Table of Contents
+
+- [Features](#-features)
+- [Architecture](#-architecture)
+- [Directory Structure](#-directory-structure)
+- [Prerequisites](#-prerequisites)
+- [Installation](#-installation)
+- [Configuration](#-configuration)
+- [Development](#-development)
+- [Security](#-security)
+- [Monitoring](#-monitoring)
+- [Contributing](#-contributing)
+- [License](#-license)
 
 ## 🌟 Features
 
-- Containerized microservices architecture
-- Secure and optimized Docker configurations
-- Health monitoring for all services
-- Resource management and scaling capabilities
-- Development and production environments
-- Automated build and deployment process
+### Core Features
+- **Product Management**
+  - Catalog browsing and search
+  - Category-based navigation
+  - Product details and variations
+  - Stock management
+
+- **Shopping Experience**
+  - Intuitive cart management
+  - Secure checkout process
+  - Order tracking
+  - Wishlist functionality
+
+- **User Management**
+  - Secure authentication
+  - Profile management
+  - Order history
+  - Address management
+
+### Technical Features
+- **Containerization**
+  - Multi-stage Docker builds
+  - Docker Compose orchestration
+  - Volume management
+  - Network isolation
+
+- **Security**
+  - Non-root container execution
+  - Environment variable protection
+  - CORS configuration
+  - Rate limiting
+
+- **Monitoring**
+  - Health check endpoints
+  - Resource monitoring
+  - Log management
+  - Performance metrics
 
 ## 🏗️ Architecture
 
-The application consists of three main services:
+### System Components
 
-1. **Frontend Service**
-   - NGINX-based static file server
-   - Modern responsive UI
-   - Health monitoring endpoint
-   - Optimized asset caching
-   - Gzip compression enabled
+```mermaid
+graph TD
+    A[Client] --> B[NGINX Frontend]
+    B --> C[Node.js Backend]
+    C --> D[PostgreSQL Database]
+    B --> E[Static Assets]
+    C --> F[Cache Layer]
+    C --> G[File Storage]
+```
 
-2. **Backend Service**
-   - Node.js/Express REST API
-   - PostgreSQL database integration
-   - CORS enabled
-   - Health monitoring endpoint
-   - Secure non-root user execution
+### Service Details
 
-3. **Database Service**
-   - PostgreSQL 13
-   - Persistent volume storage
-   - Health monitoring
-   - Automated backup capability
+1. **Frontend Service (NGINX)**
+   - Static file serving
+   - Gzip compression
+   - Cache optimization
+   - Load balancing ready
+
+2. **Backend Service (Node.js)**
+   - RESTful API
+   - Business logic
+   - Authentication
+   - Data validation
+
+3. **Database Service (PostgreSQL)**
+   - Data persistence
+   - ACID compliance
+   - Backup management
+   - Data integrity
+
+## 📁 Directory Structure
+
+```
+online-store/
+├── .github/                    # GitHub Actions workflows
+│   └── workflows/
+│       └── ci.yml
+├── frontend/                   # Frontend application
+│   ├── src/                   # Source files
+│   │   ├── assets/           # Static assets
+│   │   ├── components/       # UI components
+│   │   ├── styles/          # CSS styles
+│   │   ├── app.js          # Main application
+│   │   └── index.html      # Entry point
+│   ├── tests/               # Frontend tests
+│   ├── .dockerignore        # Docker ignore rules
+│   ├── Dockerfile          # Frontend container
+│   ├── nginx.conf          # NGINX configuration
+│   └── package.json        # Dependencies
+├── backend/                    # Backend application
+│   ├── src/                   # Source files
+│   │   ├── controllers/      # Request handlers
+│   │   ├── models/          # Data models
+│   │   ├── routes/          # API routes
+│   │   ├── middleware/      # Custom middleware
+│   │   ├── utils/          # Utility functions
+│   │   └── server.js       # Entry point
+│   ├── tests/               # Backend tests
+│   ├── .dockerignore        # Docker ignore rules
+│   ├── Dockerfile          # Backend container
+│   └── package.json        # Dependencies
+├── database/                   # Database configurations
+│   ├── migrations/           # DB migrations
+│   ├── seeds/               # Seed data
+│   └── schema.sql           # DB schema
+├── scripts/                    # Utility scripts
+│   ├── backup.sh            # Backup script
+│   └── deploy.sh            # Deployment script
+├── docs/                       # Documentation
+│   ├── api/                 # API documentation
+│   ├── deployment/          # Deployment guides
+│   └── development/         # Development guides
+├── .env.example               # Environment template
+├── .gitignore                 # Git ignore rules
+├── docker-compose.yml         # Container orchestration
+├── docker-compose.override.yml # Local overrides
+└── README.md                  # Project documentation
+```
 
 ## 🚀 Getting Started
 
@@ -42,100 +160,35 @@ The application consists of three main services:
 - Docker Engine 20.10+
 - Docker Compose 2.0+
 - Git
+- Node.js 20+ (for local development)
 
-### Installation
+### Quick Start
 
-1. Clone the repository:
-```bash
-git clone <repository-url>
-cd online-store
-```
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/MalikShoaibAhmadKhan/ONLINE-STORE.git
+   cd ONLINE-STORE
+   ```
 
-2. Configure environment variables:
-```bash
-cp .env.example .env
-# Edit .env with your configurations
-```
+2. **Set up environment variables**
+   ```bash
+   cp .env.example .env
+   # Edit .env with your configurations
+   ```
 
-3. Build and start the containers:
-```bash
-docker-compose up -d
-```
+3. **Start the application**
+   ```bash
+   docker-compose up -d
+   ```
 
-4. Access the application:
-- Frontend: http://localhost:80
-- Backend API: http://localhost:3000
-- Database: PostgreSQL on port 5432 (internal)
+4. **Access the application**
+   - Frontend: http://localhost:80
+   - Backend API: http://localhost:3000
+   - API Documentation: http://localhost:3000/api-docs
 
-## 🛠️ Development
-
-### Local Development Setup
-
-1. Install dependencies:
-```bash
-# Frontend
-cd frontend
-npm install
-
-# Backend
-cd backend
-npm install
-```
-
-2. Start development servers:
-```bash
-# Frontend
-npm start
-
-# Backend
-npm run dev
-```
-
-### Docker Commands
-
-- Build containers: `docker-compose build`
-- Start services: `docker-compose up -d`
-- Stop services: `docker-compose down`
-- View logs: `docker-compose logs -f [service]`
-- Restart services: `docker-compose restart`
-- Remove volumes: `docker-compose down -v`
-
-## 🔒 Security Features
-
-- Non-root user execution in containers
-- Environment variable management
-- Secure headers in NGINX
-- CORS configuration
-- Resource limitations
-- Network isolation
-
-## 📊 Monitoring & Maintenance
-
-### Health Checks
-
-- Frontend: `http://localhost:80/health`
-- Backend: `http://localhost:3000/health`
-- Database: Internal PostgreSQL health check
-
-### Logging
-
-- JSON format logs
-- Log rotation enabled
-- Size-based log management
-- Separate logs per service
-
-### Resource Management
-
-- CPU limits configured
-- Memory limits in place
-- Disk space monitoring
-- Container resource tracking
-
-## 🔧 Configuration
+## ⚙️ Configuration
 
 ### Environment Variables
-
-Key environment variables (configured in `.env`):
 
 ```env
 # Node Environment
@@ -155,56 +208,117 @@ BACKEND_HOST=0.0.0.0
 # Frontend Configuration
 FRONTEND_PORT=80
 
-# JWT Configuration
+# Security
 JWT_SECRET=your_jwt_secret_here
 JWT_EXPIRATION=24h
 ```
 
-### Docker Compose Configuration
+### Docker Configuration
 
-- Resource limits per service
-- Health check parameters
-- Logging configuration
-- Network settings
-- Volume management
+```yaml
+# Resource Limits
+resources:
+  limits:
+    cpus: '1.00'
+    memory: 1G
+  reservations:
+    cpus: '0.25'
+    memory: 256M
+```
 
-## 🔍 Improvements Made
+## 💻 Development
 
-1. **Security Enhancements**:
-   - Non-root user implementation
-   - Secure file permissions
-   - Environment variable management
-   - Alpine-based images
-   - Security headers
+### Local Development
 
-2. **Performance Optimizations**:
-   - Multi-stage builds
-   - NGINX caching
-   - Gzip compression
-   - Resource limits
-   - Layer optimization
+```bash
+# Frontend
+cd frontend
+npm install
+npm start
 
-3. **Reliability Improvements**:
-   - Health monitoring
-   - Automatic restarts
-   - Dependency management
-   - Error handling
-   - Logging configuration
+# Backend
+cd backend
+npm install
+npm run dev
+```
 
-4. **Development Experience**:
-   - Clear project structure
-   - Development/production separation
-   - Easy-to-use commands
-   - Comprehensive documentation
+### Docker Commands
 
-## 📝 License
+```bash
+# Build services
+docker-compose build
 
-[Your License Here]
+# Start services
+docker-compose up -d
 
-## 👥 Contributing
+# View logs
+docker-compose logs -f
+
+# Stop services
+docker-compose down
+
+# Remove volumes
+docker-compose down -v
+```
+
+## 🔒 Security Features
+
+- Non-root container execution
+- Environment variable protection
+- CORS configuration
+- Rate limiting
+- SQL injection protection
+- XSS prevention
+- CSRF protection
+- Security headers
+
+## 📊 Monitoring
+
+### Health Checks
+
+- Frontend: `http://localhost:80/health`
+- Backend: `http://localhost:3000/health`
+- Database: Internal PostgreSQL health check
+
+### Logging
+
+- JSON format logs
+- Log rotation
+- Size-based log management
+- Separate logs per service
+
+### Resource Monitoring
+
+- CPU usage tracking
+- Memory consumption
+- Disk space monitoring
+- Network usage
+
+## 🤝 Contributing
 
 1. Fork the repository
 2. Create your feature branch
+   ```bash
+   git checkout -b feature/amazing-feature
+   ```
 3. Commit your changes
+   ```bash
+   git commit -m 'Add some amazing feature'
+   ```
 4. Push to the branch
-5. Create a Pull Request 
+   ```bash
+   git push origin feature/amazing-feature
+   ```
+5. Open a Pull Request
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+<div align="center">
+
+Made with ❤️ by [Malik Shoaib Ahmad Khan](https://github.com/MalikShoaibAhmadKhan)
+
+</div> 
